@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿using MMABooksBusinessClasses;
+using MMABooksDBClasses;
+using MySql.Data.MySqlClient;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
-using MMABooksBusinessClasses;
-using MMABooksDBClasses;
+using Org.BouncyCastle.Crypto.Engines;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace MMABooksTests
 {
@@ -32,6 +33,22 @@ namespace MMABooksTests
             int customerID = CustomerDB.AddCustomer(c);
             c = CustomerDB.GetCustomer(customerID);
             ClassicAssert.AreEqual("Mickey Mouse", c.Name);
+        }
+
+        [Test]
+        public void TestDeleteCustomer()
+        {
+            Customer c = CustomerDB.GetCustomer(1);
+            Console.WriteLine($"Customer Name: {c.Name}");
+            // delete user (maintains reference to the object c)
+            CustomerDB.DeleteCustomer(c);
+            // check to confirm the customer with that ID
+            // throws an error when we run a select statement (retrieve)
+            Assert.Throws<MySqlException>(() => CustomerDB.GetCustomer(1));
+            // readd that same customer to leave the DB unaltered for testing
+            int customerID = CustomerDB.AddCustomer(c);
+            // confirm that the customerID matches the ID we pulled earlier
+            Assert.Equals(c.CustomerID, customerID);
         }
     }
 }
