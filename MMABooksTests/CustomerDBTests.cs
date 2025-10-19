@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using MMABooksBusinessClasses;
 using MMABooksDBClasses;
 
@@ -15,7 +16,7 @@ namespace MMABooksTests
         public void TestGetCustomer()
         {
             Customer c = CustomerDB.GetCustomer(1);
-            Assert.AreEqual(1, c.CustomerID);
+            ClassicAssert.AreEqual(1, c.CustomerID);
         }
 
         [Test]
@@ -30,7 +31,7 @@ namespace MMABooksTests
 
             int customerID = CustomerDB.AddCustomer(c);
             c = CustomerDB.GetCustomer(customerID);
-            Assert.AreEqual("Mickey Mouse", c.Name);
+            ClassicAssert.AreEqual("Mickey Mouse", c.Name);
         }
     }
 }

@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using MMABooksBusinessClasses;
 using System;
 
@@ -12,23 +13,23 @@ namespace MMABooksTests
         public void Test1()
         {
             int expected = 5;
-            Assert.AreEqual(expected, 3 + 2);
+            ClassicAssert.AreEqual(expected, 3 + 2);
         }
 
         [Test]
         public void TestStateConstructor()
         {
             State state1 = new State();
-            Assert.IsNotNull(state1);
-            Assert.AreEqual(null, state1.StateCode);
-            Assert.AreEqual(null, state1.StateName);
+            ClassicAssert.IsNotNull(state1);
+            ClassicAssert.AreEqual(null, state1.StateCode);
+            ClassicAssert.AreEqual(null, state1.StateName);
 
             string newCode = "OR";
             string newName = "Oregon";
             State state2 = new State(newCode, newName);
-            Assert.IsNotNull(state2);
-            Assert.AreEqual(newCode, state2.StateCode);
-            Assert.AreEqual(newName, state2.StateName);
+            ClassicAssert.IsNotNull(state2);
+            ClassicAssert.AreEqual(newCode, state2.StateCode);
+            ClassicAssert.AreEqual(newName, state2.StateName);
         }
 
         [Test]
@@ -41,16 +42,16 @@ namespace MMABooksTests
             state1.StateCode = newCode;
             state1.StateName = newName;
             // assert that the property now returns the new values
-            Assert.AreEqual(newCode, state1.StateCode);
-            Assert.AreEqual(newName, state1.StateName);
+            ClassicAssert.AreEqual(newCode, state1.StateCode);
+            ClassicAssert.AreEqual(newName, state1.StateName);
             // the previous part of the test isn't sufficient because the setters might ALWAYS set the properties to oregon
             // make sure that's not the case by providing a different set of values
             newCode = "CA";
             newName = "California";
             state1.StateCode = newCode;
             state1.StateName = newName;
-            Assert.AreEqual(newCode, state1.StateCode);
-            Assert.AreEqual(newName, state1.StateName);
+            ClassicAssert.AreEqual(newCode, state1.StateCode);
+            ClassicAssert.AreEqual(newName, state1.StateName);
         }
 
         [Test]
@@ -64,8 +65,8 @@ namespace MMABooksTests
         public void TestStateToString()
         {
             State state1 = new State("NY", "New York");
-            Assert.IsTrue(state1.ToString().Contains("NY"));
-            Assert.IsTrue(state1.ToString().Contains("New York"));
+            ClassicAssert.IsTrue(state1.ToString().Contains("NY"));
+            ClassicAssert.IsTrue(state1.ToString().Contains("New York"));
         }
 
 
