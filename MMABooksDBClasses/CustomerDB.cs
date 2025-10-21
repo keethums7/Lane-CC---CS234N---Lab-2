@@ -110,6 +110,8 @@ namespace MMABooksDBClasses
             MySqlCommand deleteCommand =
                 new MySqlCommand(deleteStatement, connection);
             deleteCommand.Parameters.AddWithValue(
+                "@CustomerID", customer.CustomerID);
+            deleteCommand.Parameters.AddWithValue(
                 "@Name", customer.Name);
             deleteCommand.Parameters.AddWithValue(
                 "@Address", customer.Address);
@@ -126,7 +128,10 @@ namespace MMABooksDBClasses
                 // execute the command
                 int deletedRows = deleteCommand.ExecuteNonQuery();
                 // if the number of records returned = 1, return true otherwise return false
-                return deletedRows == 1;
+                if (deletedRows != 1)
+                {
+                    return false;
+                }
             }
             catch (MySqlException ex)
             {
@@ -146,6 +151,8 @@ namespace MMABooksDBClasses
             Customer newCustomer)
         {
             // create a connection
+            MySqlConnection connection = MMABooksDB.GetConnection();
+
             string updateStatement =
                 "UPDATE Customers SET " +
                 "Name = @NewName, " +
@@ -160,19 +167,38 @@ namespace MMABooksDBClasses
                 "AND State = @OldState " +
                 "AND ZipCode = @OldZipCode";
             // setup the command object
+            MySqlCommand updateCommand = 
+                new MySqlCommand(updateStatement, connection);
+            updateCommand.Parameters.AddWithValue(
+            "@CustomerID", newCustomer.CustomerID);
+            updateCommand.Parameters.AddWithValue(
+                "@Name", newCustomer.Name);
+            updateCommand.Parameters.AddWithValue(
+                "@Address", newCustomer.Address);
+            updateCommand.Parameters.AddWithValue(
+                "@City", newCustomer.City);
+            updateCommand.Parameters.AddWithValue(
+                "@State", newCustomer.State);
+            updateCommand.Parameters.AddWithValue(
+                "@ZipCode", newCustomer.ZipCode);
             try
             {
                 // open the connection
+                connection.Open();
                 // execute the command
+                int updatedRows = updateCommand.ExecuteNonQuery();
                 // if the number of records returned = 1, return true otherwise return false
+                return (updatedRows == 1);
             }
             catch (MySqlException ex)
             {
                 // throw the exception
+                throw ex;
             }
             finally
             {
                 // close the connection
+                connection.Close();
             }
 
             return false;
